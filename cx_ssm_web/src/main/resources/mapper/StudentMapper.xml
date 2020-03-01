@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cx.student.dao.IStudentdao">
+
+  <select id="findAll" resultType="cx.student.entity.Student">
+      select *from student
+  </select>
+    <select id="findBySno" parameterType="int" resultType="cx.student.entity.Student">
+        select *from student where sno=#{sno}
+    </select>
+
+    <insert id="addStudent" parameterType="cx.student.entity.Student" >
+     insert student values(#{sno},#{sname},#{sage},#{saddress})
+    </insert>
+    <delete id="deletStudentBySno" parameterType="int">
+       delete from student where sno=#{sno};
+    </delete>
+
+    <update id="upDateStudentBySno" parameterType="cx.student.entity.Student">
+       update student set sname=#{sname},sage=#{sage},saddress=#{saddress} where sno=#{sno}
+    </update>
+
+    <select id="getTotalCount" resultType="int">
+        select count(*) from student
+    </select>
+</mapper>

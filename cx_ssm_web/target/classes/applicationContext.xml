@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context.xsd
+	http://www.springframework.org/schema/aop
+	http://www.springframework.org/schema/aop/spring-aop.xsd
+	http://www.springframework.org/schema/tx
+	http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+
+    <!--使用注解扫描service和dao-->
+    <context:component-scan base-package="cx.student.dao"></context:component-scan>
+
+    <context:component-scan base-package="cx.student.service"></context:component-scan>
+    <!-- 创建Service层的bean
+    <bean id="StudentServiceImpl" class="cx.student.service.impl.StudentServiceImpl">
+        <property name="dao" ref="IStudentdao"></property>
+    </bean>
+    -->
+    <!--配置连接池-->
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://127.0.0.1:3306/cx?serverTimezone=Asia/Shanghai&amp;characterEncoding=utf8"/>
+        <property name="username" value="root"/>
+        <property name="password" value=""/>
+    </bean>
+
+
+
+    <!--配置SqlSessionFactory工厂-->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!--mapper映射文件与dao接口不在同一个包下-->
+        <property name="mapperLocations" value="classpath:mapper/*.xml"/>
+
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+
+    <bean id="mappersdao" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!-- 注入sqlSessionFactory -->
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+        <!-- 给出需要扫描批量产生mapper的接口包 -->
+        <property name="basePackage" value="cx.student.dao"/>
+    </bean>
+
+
+
+</beans>
